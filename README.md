@@ -1,5 +1,7 @@
 # X-Clacks-Overhead
 
+[![Build Status](https://travis-ci.org/heiglandreas/X-Clacks-Overhead.svg?branch=master)](https://travis-ci.org/heiglandreas/X-Clacks-Overhead)
+
 As described in http://www.gnuterrypratchett.com
 
 ## Installation
