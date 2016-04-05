@@ -27,7 +27,7 @@
 
 namespace Org_Heigl\Middleware\Clacks;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class Clacks
@@ -47,19 +47,23 @@ class Clacks
     /**
      * Example middleware invokable class
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
-     * @param  callable                                 $next     Next middleware
+     * @param  \Psr\Http\Message\RequestInterface  $request  PSR7 request
+     * @param  \Psr\Http\Message\ResponseInterface $response PSR7 response
+     * @param  callable                            $next     Next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(
-        ServerRequestInterface $request,
+        RequestInterface $request,
         ResponseInterface $response,
         callable $next
     ) {
+        $clacker = 'GNU ' . $this->name;
+        if ($request->hasHeader('X-Clacks-Overhead')) {
+            $clacker = $request->getHeader('X-Clacks-Overhead')[0];
+        }
 
-        $response = $response->withHeader('X-Clacks-Overhead', 'GNU ' . $this->name);
+        $response = $response->withHeader('X-Clacks-Overhead', $clacker);
         return $next($request, $response);
     }
 

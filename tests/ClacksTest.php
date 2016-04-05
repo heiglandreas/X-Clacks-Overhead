@@ -27,6 +27,8 @@
 
 namespace Org_HeiglTest\Middleware\Clacks;
 
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Org_Heigl\Middleware\Clacks\Clacks;
 
 class ClacksTest extends \PHPUnit_Framework_TestCase
@@ -35,6 +37,25 @@ class ClacksTest extends \PHPUnit_Framework_TestCase
     {
         $middleware = new Clacks();
 
-        $request = $this->getMockBuilder();
+        $request  = new Request('GET', 'http://localhost');
+        $response = new Response();
+        
+        $response = $middleware($request, $response, function ($request, $response) {
+            return $response;
+        });
+        $this->assertEquals(['GNU Terry Pratchett'], $response->getHeader('X-Clacks-Overhead'));
+    }
+
+    public function testThatInvocationWithXClacksResultsInSameName()
+    {
+        $middleware = new Clacks();
+
+        $request  = new Request('GET', 'http://localhost', ['X-Clacks-Overhead' => ['GNU Foo Bar']]);
+        $response = new Response();
+
+        $response = $middleware($request, $response, function ($request, $response) {
+            return $response;
+        });
+        $this->assertEquals(['GNU Foo Bar'], $response->getHeader('X-Clacks-Overhead'));
     }
 }
