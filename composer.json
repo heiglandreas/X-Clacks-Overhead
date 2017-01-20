@@ -7,7 +7,7 @@
   }],
   "description" : "Implements the Clacks-Header as per http://www.gnuterrypratchett.com",
   "keywords" : ["clacks", "clacker", "pratchett", "discworld"],
-  "type" : "library",
+  "type" : "Middleware",
   "license" : "MIT",
   "require" : {
     "psr/http-message" : "^1.0"
