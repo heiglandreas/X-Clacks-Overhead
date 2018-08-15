@@ -27,36 +27,44 @@
 
 namespace Org_HeiglTest\Middleware\Clacks;
 
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Org_Heigl\Middleware\Clacks\Clacks;
+use GuzzleHttp\Psr7\ServerRequest;
+use Org_Heigl\Middleware\Clacks\ClacksMiddleware;
+use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
+use Mockery as M;
 
-class ClacksTest extends TestCase
+class ClacksMiddlewareTest extends TestCase
 {
     public function testThatInvocationResultsInXClacksHeader()
     {
-        $middleware = new Clacks();
+        $middleware = new ClacksMiddleware();
 
-        $request  = new Request('GET', 'http://localhost');
+        $request  = new ServerRequest('GET', 'http://localhost');
         $response = new Response();
-        
-        $response = $middleware($request, $response, function ($request, $response) {
-            return $response;
-        });
-        self::assertEquals(['GNU Terry Pratchett'], $response->getHeader('X-Clacks-Overhead'));
+
+        $handler = M::mock(RequestHandlerInterface::class);
+        $handler->shouldReceive('handle')->andReturn($response);
+
+        $response = $middleware->process($request, $handler);
+
+        $this->assertEquals(['GNU Terry Pratchett'], $response->getHeader('X-Clacks-Overhead'));
     }
 
     public function testThatInvocationWithXClacksResultsInSameName()
     {
-        $middleware = new Clacks();
+        $middleware = new ClacksMiddleware();
 
-        $request  = new Request('GET', 'http://localhost', ['X-Clacks-Overhead' => ['GNU Foo Bar']]);
+        $request  = new ServerRequest('GET', 'http://localhost', ['X-Clacks-Overhead' => ['GNU Foo Bar']]);
         $response = new Response();
 
-        $response = $middleware($request, $response, function ($request, $response) {
-            return $response;
-        });
-        self::assertEquals(['GNU Foo Bar'], $response->getHeader('X-Clacks-Overhead'));
+        $handler = M::mock(RequestHandlerInterface::class);
+        $handler->shouldReceive('handle')->andReturn($response);
+
+        $response = $middleware->process($request, $handler);
+
+        $this->assertEquals(['GNU Foo Bar'], $response->getHeader('X-Clacks-Overhead'));
     }
 }
