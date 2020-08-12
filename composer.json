@@ -7,16 +7,16 @@
   }],
   "description" : "Implements the Clacks-Header as per http://www.gnuterrypratchett.com",
   "keywords" : ["clacks", "clacker", "pratchett", "discworld"],
-  "type" : "Middleware",
+  "type" : "middleware",
   "license" : "MIT",
   "require" : {
-    "php":"^7.1",
+    "php":"^7.1||^8.0",
     "psr/http-message" : "^1.0",
     "psr/http-server-middleware": "^1.0"
   },
   "require-dev" : {
     "mockery/mockery": "^1.1",
-    "phpunit/phpunit": "^7.0",
+    "phpunit/phpunit": "^7.0||^8.0||^9.0",
     "guzzlehttp/psr7": "^1.2"
   },
   "autoload" : {
