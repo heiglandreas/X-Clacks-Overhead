@@ -11,6 +11,6 @@ matrix:
   allow_failures:
   - php: nightly
 before_install:
-- travis_retry composer install --no-interaction --ignore-platform-reqs
+- travis_retry composer install --no-interaction
 script:
 - ./vendor/bin/phpunit
